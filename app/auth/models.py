@@ -24,3 +24,8 @@ class User(db.Model):
 
     def get_id(self):
         return str(self.id)
+
+if __name__ == '__main__':
+    # Make migration
+    db.create_all()
+    db.session.commit()

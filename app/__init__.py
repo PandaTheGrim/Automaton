@@ -12,8 +12,10 @@ def create_app():
 
     import app.auth.controllers as auth
     import app.dashboard.controllers as dashboard
+    import app.api.controllers as api
 
     app.register_blueprint(auth.module)
     app.register_blueprint(dashboard.module)
+    app.register_blueprint(api.module)
 
     return app

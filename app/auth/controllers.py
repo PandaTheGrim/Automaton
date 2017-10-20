@@ -21,9 +21,9 @@ def log_error(*args, **kwargs):
 
 
 @module.route('/', methods=['GET', 'POST'])
-@module.route('/login', methods=['GET', 'POST'])
+@module.route('login', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        return redirect(url_for('dashboard.dashboard'))
+        return redirect(url_for('dashboard.index'))
     if request.method == 'GET':
         return render_template('auth/login.html')
