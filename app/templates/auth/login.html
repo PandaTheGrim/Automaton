@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Login </title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  
+      <link rel="stylesheet" href="../../static/auth/css/style.css">
+
+  
+</head>
+
+<body>
+  <div class="wrap">
+	  {% block flash %}
+	    {% with messages = get_flashed_messages(with_categories=true) %}
+	      {% if messages %}
+
+	        {% for message in messages %}
+	          {% if "Error" not in message[1]: %}
+	             <div class="alert alert-info text-center">
+		           <strong>Success! </strong> {{ message[1] }}
+	             </div>
+	          {% endif %}
+	          {% if "Error" in message[1]: %}
+	             <div class="alert alert-warning text-center">
+		           <strong>Error! </strong> {{ message[1] }}
+	             </div>
+	          {% endif %}
+	        {% endfor %}
+	      {% endif %}
+	    {% endwith %}
+	  {% endblock %}
+		<div class="avatar">
+      <img src="http://cdn.ialireza.me/avatar.png">
+		</div>
+		<input type="username" placeholder="username" required>
+		<div class="bar">
+			<i></i>
+		</div>
+		<input type="password" placeholder="password" required>
+		<a href="" class="forgot_link">forgot ?</a>
+	    <form action = "" method = "post">
+			<button>Sign in</button>
+	    </form>
+	</div>
+  
+    <script  src="../../static/js/index.js"></script>
+
+</body>
+</html>

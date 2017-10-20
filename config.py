@@ -4,9 +4,19 @@ class Config(object):
     DEBUG = False
     CSRF_ENABLED = True
     SECRET_KEY = 'VERY_SAFE_SECRET'
-    # SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-    # SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+    POSTGRESQL_DATABASE_DATABASE = 'automaton'
+    POSTGRESQL_DATABASE_USERNAME = 'automaton'
+    POSTGRESQL_DATABASE_PASSWORD = 'automaton'
+    POSTGRESQL_DATABASE_HOSTNAME = 'localhost'
+    POSTGRESQL_DATABASE_PORTNUMB = '5433'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{usrn}:{pasw}@{host}:{port}/{db_n}'.format(
+        usrn=POSTGRESQL_DATABASE_USERNAME,
+        pasw=POSTGRESQL_DATABASE_PASSWORD,
+        host=POSTGRESQL_DATABASE_HOSTNAME,
+        port=POSTGRESQL_DATABASE_PORTNUMB,
+        db_n=POSTGRESQL_DATABASE_DATABASE)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ECHO = True
 
 class ProductionConfig(Config):
     DEBUG = False

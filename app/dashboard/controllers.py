@@ -9,8 +9,8 @@ from flask import (
     current_app,
 )
 
-module = Blueprint('dashboard', __name__, url_prefix ='/')
+module = Blueprint('dashboard', __name__, url_prefix ='/automaton')
 
-@module.route('/')
+@module.route('/index')
 def dashboard():
     return render_template('dashboard/index.html')
