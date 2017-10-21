@@ -13,7 +13,7 @@ module = Blueprint('cases', __name__, url_prefix ='/automaton/cases')
 
 @module.route('/')
 def list():
-    abort(418)
+    return render_template('testcases/index.html')
 
 @module.route('/create')
 def create():

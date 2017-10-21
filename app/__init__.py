@@ -16,6 +16,7 @@ def create_app():
     import app.releases.controllers as releases
     import app.testplans.controllers as testplans
     import app.testcases.controllers as testcases
+    import app.documentation.controllers as docs
 
     app.register_blueprint(auth.module)
     app.register_blueprint(dashboard.module)
@@ -23,5 +24,6 @@ def create_app():
     app.register_blueprint(releases.module)
     app.register_blueprint(testcases.module)
     app.register_blueprint(testplans.module)
+    app.register_blueprint(docs.module)
 
     return app
