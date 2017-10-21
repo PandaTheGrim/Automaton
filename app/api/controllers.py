@@ -14,3 +14,7 @@ module = Blueprint('api', __name__, url_prefix ='/api')
 @module.route('/')
 def index():
     return 'Hello world!'
+
+@module.route('/docs')
+def docs():
+    return 'Placement for documents about api!'

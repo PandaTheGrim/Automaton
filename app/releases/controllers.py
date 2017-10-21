@@ -13,7 +13,7 @@ module = Blueprint('releases', __name__, url_prefix ='/automaton/releases')
 
 @module.route('/')
 def list():
-    pass
+    abort(418)
 
 @module.route('/create')
 def create():
@@ -27,6 +27,14 @@ def read():
 def update():
     pass
 
-@module.route('/edit')
+@module.route('/delete')
 def delete():
     pass
+
+
+'''
+<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="{{ url_for('releases.list') }}">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Test-plans</span>
+          </a>'''
