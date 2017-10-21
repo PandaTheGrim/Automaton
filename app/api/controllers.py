@@ -13,8 +13,8 @@ module = Blueprint('api', __name__, url_prefix ='/api')
 
 @module.route('/')
 def index():
-    return render_template('api/index.html')
+    abort(418)
 
 @module.route('/docs')
 def docs():
-    return 'Placement for documents about api!'
+    return render_template('api/docs.html')
