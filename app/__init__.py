@@ -6,9 +6,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('config.DevelopmentConfig')
 
-    # db.init_app(app)
-    # with app.test_request_context():
-      #   db.create_all()
+    db.init_app(app)
+    with app.test_request_context():
+        db.create_all()
 
     import app.auth.controllers as auth
     import app.dashboard.controllers as dashboard

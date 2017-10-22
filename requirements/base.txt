@@ -7,3 +7,4 @@ flask_bootstrap
 flask_wtf
 wtforms
 rauth
+flask_migrate

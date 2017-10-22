@@ -17,7 +17,7 @@ def list():
 
 @module.route('/create')
 def create():
-    pass
+    return render_template('testplans/create.html')
 
 @module.route('/view')
 def read():

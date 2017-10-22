@@ -7,13 +7,8 @@ class TestCase(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False)
-    description = db.Column(db.String(80), unique=False)
-    status = db.Column(db.String(80), unique=False)
+    description = db.Column(db.String(180), unique=False)
+    status = db.Column(db.String(20), unique=False)
 
     test_plan = db.relationship("TestPlan", backref="test_case", lazy="dynamic")
     user = db.relationship("User", backref="test_case", lazy="dynamic")
-
-if __name__ == '__main__':
-    # Make migration
-    db.create_all()
-    db.session.commit()

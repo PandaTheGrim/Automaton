@@ -33,25 +33,45 @@
             <span class="nav-link-text">Metrics</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="{{ url_for('releases.list') }}">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Releases">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponentsReleases" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-sitemap"></i>
             <span class="nav-link-text">Releases</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponentsReleases">
+            <li>
+              <a href="">Current</a>
+            </li>
+            <li>
+              <a href="{{ url_for('releases.create') }}">Create new</a>
+            </li>
+            <li>
+              <a href="{{ url_for('releases.list') }}">History</a>
+            </li>
+          </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="{{ url_for('plans.list') }}">
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Test plans">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponentsPlans" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Test-plans</span>
+            <span class="nav-link-text">Test plans</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponentsPlans">
+            <li>
+              <a href="{{ url_for('plans.list') }}">View all</a>
+            </li>
+            <li>
+              <a href="{{ url_for('plans.create') }}">Create new</a>
+            </li>
+          </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Documents">
           <a class="nav-link" href="{{ url_for('docs.index') }}">
             <i class="fa fa-fw fa-book"></i>
             <span class="nav-link-text">Documentation</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Api">
           <a class="nav-link" href="{{ url_for('api.docs')}}">
             <i class="fa fa-fw fa-gears"></i>
             <span class="nav-link-text">Api</span>

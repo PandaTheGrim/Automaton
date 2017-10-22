@@ -7,13 +7,8 @@ class Release(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(180), unique=False)
     xml = db.Column(db.String(80), unique=False)
-    status = db.Column(db.String(80), unique=False)
+    status = db.Column(db.String(20), unique=False)
 
-    test_plan = db.relationship("TestPlan", backref="release", lazy="dynamic")
     user = db.relationship("User", backref="release", lazy="dynamic")
-
-if __name__ == '__main__':
-    # Make migration
-    db.create_all()
-    db.session.commit()
