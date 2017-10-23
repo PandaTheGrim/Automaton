@@ -1,14 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="container-fluid">
-    <form>
+    <form method="POST" class="add-release">
+        {{ form.hidden_tag() }}
         <div class="form-group">
-            <label class="col-form-label" for="formGroupExampleInput">Name</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Place for input your release name">
+            <label class="col-form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Place for input your release name">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Description</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" rows="3"></textarea>
         </div>
         <button type="button" class="btn btn-success">Commit</button>
     </form>

@@ -8,6 +8,10 @@ def create_app():
 
     db.init_app(app)
     with app.test_request_context():
+        from app.auth.models import Users
+        from app.releases.models import Release
+        from app.testplans.models import TestPlan
+        from app.testcases.models import TestCase
         db.create_all()
 
     import app.auth.controllers as auth

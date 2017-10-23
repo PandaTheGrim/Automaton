@@ -10,5 +10,5 @@ class TestCase(db.Model):
     description = db.Column(db.String(180), unique=False)
     status = db.Column(db.String(20), unique=False)
 
-    test_plan = db.relationship("TestPlan", backref="test_case", lazy="dynamic")
-    user = db.relationship("User", backref="test_case", lazy="dynamic")
+    test_plan_id = db.Column(db.Integer(), db.ForeignKey('test_plan.id'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))

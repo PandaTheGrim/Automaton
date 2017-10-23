@@ -9,45 +9,57 @@
   
       <link rel="stylesheet" href="../../static/auth/css/style.css">
 
-  
-</head>
 
-<body>
-  <div class="wrap">
-	  {% block flash %}
-	    {% with messages = get_flashed_messages(with_categories=true) %}
-	      {% if messages %}
+	<!DOCTYPE html>
+	<html lang="en">
 
-	        {% for message in messages %}
-	          {% if "Error" not in message[1]: %}
-	             <div class="alert alert-info text-center">
-		           <strong>Success! </strong> {{ message[1] }}
-	             </div>
-	          {% endif %}
-	          {% if "Error" in message[1]: %}
-	             <div class="alert alert-warning text-center">
-		           <strong>Error! </strong> {{ message[1] }}
-	             </div>
-	          {% endif %}
-	        {% endfor %}
-	      {% endif %}
-	    {% endwith %}
-	  {% endblock %}
-		<div class="avatar">
-      <img src="http://cdn.ialireza.me/avatar.png">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>SB Admin - Start Bootstrap Template</title>
+		<!-- Bootstrap core CSS-->
+		<link href="../../static/app/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom fonts for this template-->
+		<link href="../../static/app/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<!-- Page level plugin CSS-->
+		<link href="../../static/app/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+		<!-- Custom styles for this template-->
+		<link href="../../static/app/css/sb-admin.css" rel="stylesheet">
+	</head>
+
+<body class="bg-dark">
+<div class="container">
+	<div class="card card-login mx-auto mt-5">
+		<div class="card-header">Login</div>
+		<div class="card-body">
+			<form action="{{ url_for('auth.index') }}" method=post>
+				{{ form.hidden_tag() }}
+				<div class="form-group">
+					<label for="exampleInputUsername1">Username</label>
+					<input class="form-control" id="exampleInputUsername1" type="username" name="username" placeholder="Enter username">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Password</label>
+					<input class="form-control" id="exampleInputPassword1" type="password" name="password" placeholder="Password">
+				</div>
+				<input class="btn btn-primary btn-block" type="submit" placeholder="Login">
+			</form>
+			<div class="text-center">
+				<a class="d-block small mt-3" href="{{ url_for('auth.create') }}">Register an Account</a>
+				<a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+			</div>
 		</div>
-		<input type="username" placeholder="username" required>
-		<div class="bar">
-			<i></i>
-		</div>
-		<input type="password" placeholder="password" required>
-		<a href="" class="forgot_link">forgot ?</a>
-	    <form action = "" method = "post">
-			<button>Sign in</button>
-	    </form>
 	</div>
-  
-    <script  src="../../static/js/index.js"></script>
-
+</div>
+<!-- Bootstrap core JavaScript-->
+<script src="../../static/app/vendor/jquery/jquery.min.js"></script>
+<script src="../../static/app/vendor/popper/popper.min.js"></script>
+<script src="../../static/app/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="../../static/app/vendor/jquery-easing/jquery.easing.min.js"></script>
 </body>
+
 </html>
