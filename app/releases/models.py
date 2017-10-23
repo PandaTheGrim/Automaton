@@ -11,4 +11,4 @@ class Release(db.Model):
     xml = db.Column(db.String(80), unique=False)
     status = db.Column(db.String(20), unique=False)
 
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

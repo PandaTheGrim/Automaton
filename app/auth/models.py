@@ -10,7 +10,7 @@ class Users(db.Model):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80), unique=False)
     email = db.Column(db.String(80), unique=True)
-    role = db.Column(db.String(7),unique=False, default= 'users')
+    role = db.Column(db.String(7),unique=False, default= 'user')
 
     test_plans = db.relationship("TestPlan", backref="users", lazy="dynamic")
     test_cases = db.relationship("TestCase", backref="users", lazy="dynamic")
