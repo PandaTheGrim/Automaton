@@ -1,6 +1,7 @@
 from sqlalchemy import event
 
 from app.database import db
+from app import login_manager
 
 class Users(db.Model):
     __tablename__ = 'users'
@@ -14,3 +15,19 @@ class Users(db.Model):
     test_plans = db.relationship("TestPlan", backref="users", lazy="dynamic")
     test_cases = db.relationship("TestCase", backref="users", lazy="dynamic")
     releases = db.relationship("Release", backref="users", lazy="dynamic")
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))

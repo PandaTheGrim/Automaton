@@ -12,13 +12,16 @@ from flask import (
 )
 from sqlalchemy.exc import SQLAlchemyError
 
+from flask_login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+
+from app import login_manager
+
 from .models import Users, db
 from .forms import UserLoginForm, UserCreateForm
 
 from .oauth import github
 
 module = Blueprint('auth', __name__, url_prefix ='/account')
-
 
 def log_error(*args, **kwargs):
     current_app.logger.error(*args, **kwargs)
@@ -27,16 +30,16 @@ def log_error(*args, **kwargs):
 def index():
     form = UserLoginForm(request.form)
     try:
-        if request.method == 'POST' and form.validate():
+        if request.method == 'POST' and form.validate_on_submit():
             username = request.form['username']
             password = request.form['password']
-            current_user = Users.query.filter_by(username = username).first()
-            if current_user is None:
+            cur_user = Users.query.filter_by(username = username).first()
+            if cur_user is None:
                 log_error('No user find with name %s', username)
                 return render_template('auth/create.html',
                                        form = form)
-            if current_user.password == password:
-                g.user = current_user.id
+            if cur_user.password == password:
+                login_user(cur_user)
                 return redirect(url_for('dashboard.index'))
             else:
                 log_error('Password is incorrect %s', password)
@@ -51,14 +54,14 @@ def index():
 def create():
     form = UserCreateForm(request.form)
     try:
-        if request.method == 'POST' and form.validate():
+        if request.method == 'POST' and form.validate_on_submit():
             user = Users(username=request.form['username'],
                          email=request.form['email'],
                          password=request.form['password'])
-            g.user = user.id
             db.session.add(user)
             db.session.commit()
             flash('Success user creation', 'success')
+            login_user(user)
             return redirect(url_for('dashboard.index'))
         else:
             return render_template('auth/create.html',
@@ -70,6 +73,10 @@ def create():
     return render_template('auth/create.html',
                            form = form)
 
+@module.route('/logout', methods=['GET'])
+def logout():
+    logout_user()
+    return redirect(url_for('auth.index'))
 
 
 client_id = github.client_id
