@@ -33,7 +33,14 @@
         <tr>
           <td><a href="{{ url_for('testplans.read', id=item.id ) }}"> {{ item.name }} </a></td>
           <td>{{ item.description }}</td>
-          <td>{{ item.status }}</td>
+          <td>
+            {% if item.status == 'Closed' %}
+                <button type="button" class="btn btn-outline-warning">{{ item.status }}</button>
+            {% endif %}
+            {% if item.status == 'None' %}
+                <button type="button" class="btn btn-outline-secondary">{{ item.status }}</button>
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
         </tbody>

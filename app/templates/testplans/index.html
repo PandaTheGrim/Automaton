@@ -12,9 +12,11 @@
       {% endif %}
     {% endwith %}
 
+{% if testplan.status != 'Closed' %}
 <div class="card mb-3">
   <a href="{{ url_for('testcases.create', testplanid=testplan.id ) }}" type="button" class="btn btn-success">Create test-case</a>
 </div>
+{% endif %}
 
 <form method='POST'>
   <div class="container-fluid">
@@ -38,7 +40,9 @@
           <tbody>
           {% for item in test_cases %}
           <tr>
-            <td>{{ item.name }}</td>
+            <td>
+              <a href="{{ url_for('testcases.edit', id=item.id ) }}"> {{ item.name }} </a>
+            </td>
             <td>{{ item.description }}</td>
             <td>{{ item.comment }}</td>
             <td>
@@ -53,7 +57,7 @@
               {% endif %}
             </td>
             <td>
-              {% if item.status == 'None' %}
+              {% if item.status == 'None' and testplan.status != 'Closed' %}
                 <a href="{{ url_for('testcases.passed', id=item.id ) }}" type="button" class="btn btn-success">Pass</a>
                 <a href="{{ url_for('testcases.failed', id=item.id ) }}" type="button" class="btn btn-danger">Fail</a>
               {% endif %}
@@ -65,7 +69,9 @@
 
         <div class="card-body">
         </div>
-        <input class="btn btn-danger btn-block" type="submit" value="Close testplan">
+        {% if testplan.status != 'Closed' %}
+            <input class="btn btn-danger btn-block" type="submit" value="Close testplan">
+        {% endif %}
       </div>
     </div>
 </form>

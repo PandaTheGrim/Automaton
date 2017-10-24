@@ -73,6 +73,20 @@ def create():
 def read(id):
     cur_test_plan = TestPlan.query.filter_by(id = id).first()
     test_cases = TestCase.query.filter_by(testplan_id = id).all()
+    try:
+        if request.method == 'POST':
+            if cur_test_plan.status == 'Closed':
+                flash('This test plan is already closed. See you later', 'danger')
+                return redirect(url_for('releases.read'))
+            else:
+                cur_test_plan.status = 'Closed'
+                db.session.commit()
+                flash('Test plan successfully closed. Yay!', 'success')
+                return redirect(url_for('releases.read'))
+    except SQLAlchemyError as e:
+        log_error('There was error while querying database', exc_info=e)
+        db.session.rollback()
+        flash('Something went wrong, please check your input data.', 'danger')
     return render_template('testplans/index.html', testplan=cur_test_plan, test_cases=test_cases)
 
 
