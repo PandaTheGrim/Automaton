@@ -11,7 +11,7 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
-<form action="{{ url_for('releases.read') }}" method='POST'>
+<form method='POST'>
 <div class="container-fluid">
   <div class="card mb-3">
     <div class="card-header">
@@ -31,7 +31,7 @@
         <tbody>
         {% for item in test_plans %}
         <tr>
-          <td>{{ item.name }}</td>
+          <td><a href="{{ url_for('testplans.read', id=item.id ) }}"> {{ item.name }} </a></td>
           <td>{{ item.description }}</td>
           <td>{{ item.status }}</td>
         </tr>

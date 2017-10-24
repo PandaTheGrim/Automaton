@@ -9,13 +9,13 @@
   <meta name="author" content="">
   <title>Automaton - test management tool for Q&A engineers</title>
   <!-- Bootstrap core CSS-->
-  <link href="../../static/app/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='app/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Custom fonts for this template-->
-  <link href="../../static/app/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='app/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
   <!-- Page level plugin CSS-->
-  <link href="../../static/app/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='app/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
   <!-- Custom styles for this template-->
-  <link href="../../static/app/css/sb-admin.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='app/css/sb-admin.css') }}" rel="stylesheet">
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -50,20 +50,11 @@
             </li>
           </ul>
         </li>
-
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Test plans">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponentsPlans" data-parent="#exampleAccordion">
+          <a class="nav-link" href="{{ url_for('testplans.create') }}">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Test plans</span>
+            <span class="nav-link-text">Create test plan</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseComponentsPlans">
-            <li>
-              <a href="{{ url_for('testplans.list') }}">View all</a>
-            </li>
-            <li>
-              <a href="{{ url_for('testplans.create') }}">Create new</a>
-            </li>
-          </ul>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Documents">
           <a class="nav-link" href="{{ url_for('docs.index') }}">
@@ -129,18 +120,18 @@
   </a>
 </body>
 <!-- Bootstrap core JavaScript-->
-<script src="../../static/app/vendor/jquery/jquery.min.js"></script>
-<script src="../../static/app/vendor/popper/popper.min.js"></script>
-<script src="../../static/app/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='app/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/popper/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- Core plugin JavaScript-->
-<script src="../../static/app/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ url_for('static', filename='app/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <!-- Page level plugin JavaScript-->
-<script src="../../static/app/vendor/chart.js/Chart.min.js"></script>
-<script src="../../static/app/vendor/datatables/jquery.dataTables.js"></script>
-<script src="../../static/app/vendor/datatables/dataTables.bootstrap4.js"></script>
+<script src="{{ url_for('static', filename='app/vendor/chart.js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
 <!-- Custom scripts for all pages-->
-<script src="../../static/app/js/sb-admin.min.js"></script>
+<script src="{{ url_for('static', filename='app/js/sb-admin.min.js') }}"></script>
 <!-- Custom scripts for this page-->
-<script src="../../static/app/js/sb-admin-datatables.min.js"></script>
-<script src="../../static/app/js/sb-admin-charts.min.js"></script>
+<script src="{{ url_for('static', filename='app/js/sb-admin-datatables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/js/sb-admin-charts.min.js') }}"></script>
 </html>

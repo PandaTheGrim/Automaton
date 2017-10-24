@@ -72,8 +72,9 @@ def create():
 @login_required
 def read(id):
     cur_test_plan = TestPlan.query.filter_by(id = id).first()
-    test_cases_array = TestCase.query.filter_by(testplan_id = id).all()
-    return str(id)
+    test_cases = TestCase.query.filter_by(testplan_id = id).all()
+    return render_template('testplans/index.html', testplan=cur_test_plan, test_cases=test_cases)
+
 
 @module.route('/edit')
 @login_required

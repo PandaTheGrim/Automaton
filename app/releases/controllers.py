@@ -46,7 +46,7 @@ def create():
                               status = status,
                               user_id = g.user.id)
             db.session.add(release)
-            db.session.commit()
+            db.session.commit(release)
             flash('Success release creation', 'success')
             return redirect(url_for('releases.read'))
         else:

@@ -6,6 +6,7 @@ class TestPlan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(180), unique=False)
+    comment = db.Column(db.String(300), unique=False)
     status = db.Column(db.String(20), unique=False)
 
     test_case = db.relationship("TestCase", backref="test_plan", lazy="dynamic")
