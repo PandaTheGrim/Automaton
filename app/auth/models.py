@@ -16,6 +16,8 @@ class Users(db.Model):
     test_cases = db.relationship("TestCase", backref="users", lazy="dynamic")
     releases = db.relationship("Release", backref="users", lazy="dynamic")
 
+    github_id = db.Column(db.String(30), unique=True)
+
     def is_authenticated(self):
         return True
 

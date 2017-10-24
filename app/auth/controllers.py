@@ -80,33 +80,47 @@ def logout():
 
 
 client_id = github.client_id
-redirect_uri = "http://127.0.0.1:5000/success_github"
+redirect_uri = "http://127.0.0.1:5000/account/success_github"
 params = {'client_id': client_id,
           'scope': 'user',
           'state': 'code123',
           'redirect_uri': redirect_uri,
           'allow_signup': "true"}
 
-url = github.get_authorize_url(**params)
-
-@module.route('github_login', methods=['GET'])
+@module.route('/github_login', methods=['GET'])
 def github_login():
-    return redirect(url)
+    return redirect(github.get_authorize_url(**params))
 
-@module.route('success_github', methods=['GET'])
+@module.route('/success_github', methods=['GET'])
 def sucess_github():
-    if request.args.get('code'):
-        session = github.get_auth_session(data={'client_id': client_id,
-                                                'client_secret': github.client_secret,
-                                                'code': request.args.get('code'),
-                                                'redirect_uri': redirect_uri,
-                                                'state': 'code123'})
+    if not request.args.get('code'):
+        print("Please implement 403!!!")
+    
+    session = github.get_auth_session(data={'client_id': client_id,
+                                            'client_secret': github.client_secret,
+                                            'code': request.args.get('code'),
+                                            'redirect_uri': redirect_uri,
+                                            'state': 'code123'})
 
-        #TODO
-        '''
-        after implementation of basic auth, we need to check if user no anonymous,
-        if user have account in system we need to login it, and else we need to create new user with
-        credentials from api.github 
-        '''
+    resp = requests.get(
+        github.base_url + "user", 
+        headers={"Authorization": "token {}".format(session.access_token)}
+    )
 
-        return redirect('/')
+    github_user_json = resp.json()
+
+    github_user_id = str(github_user_json["id"])
+    username = github_user_json["login"]
+    email = github_user_json["email"]
+
+    user = Users.query.filter_by(github_id=github_user_id).first()
+
+    if not user:
+        user = Users(username=username,
+                        email=email,
+                        github_id=github_user_id)
+        db.session.add(user)
+        db.session.commit()
+
+    login_user(user)
+    return redirect(url_for('dashboard.index'))
