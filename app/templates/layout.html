@@ -40,13 +40,13 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponentsReleases">
             <li>
-              <a href="">Current</a>
+              <a href="{{ url_for('releases.read') }}">Current</a>
             </li>
             <li>
               <a href="{{ url_for('releases.create') }}">Create new</a>
             </li>
             <li>
-              <a href="{{ url_for('releases.list') }}">History</a>
+              <a href="{{ url_for('releases.history') }}">History</a>
             </li>
           </ul>
         </li>
@@ -58,10 +58,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponentsPlans">
             <li>
-              <a href="{{ url_for('plans.list') }}">View all</a>
+              <a href="{{ url_for('testplans.list') }}">View all</a>
             </li>
             <li>
-              <a href="{{ url_for('plans.create') }}">Create new</a>
+              <a href="{{ url_for('testplans.create') }}">Create new</a>
             </li>
           </ul>
         </li>

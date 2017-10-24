@@ -1,5 +1,3 @@
-from sqlalchemy import event
-
 from app.database import db
 
 class TestPlan(db.Model):
@@ -11,4 +9,4 @@ class TestPlan(db.Model):
     status = db.Column(db.String(20), unique=False)
 
     test_case = db.relationship("TestCase", backref="test_plan", lazy="dynamic")
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
