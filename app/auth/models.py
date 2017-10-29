@@ -11,12 +11,11 @@ class Users(db.Model):
     password = db.Column(db.String(80), unique=False)
     email = db.Column(db.String(80), unique=True)
     role = db.Column(db.String(7),unique=False, default= 'user')
+    github_id = db.Column(db.String(30), unique=True)
 
     test_plans = db.relationship("TestPlan", backref="users", lazy="dynamic")
     test_cases = db.relationship("TestCase", backref="users", lazy="dynamic")
     releases = db.relationship("Release", backref="users", lazy="dynamic")
-
-    github_id = db.Column(db.String(30), unique=True)
 
     def is_authenticated(self):
         return True

@@ -17,6 +17,7 @@ class Config(object):
         db_n=POSTGRESQL_DATABASE_DATABASE)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
+    AUTOMATON_FILES_DIR = '/var/automaton'
 
 class ProductionConfig(Config):
     DEBUG = False

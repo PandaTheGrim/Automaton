@@ -18,6 +18,10 @@ from .models import Release, db
 from app.testplans.models import TestPlan
 from .forms import ReleaseCreateForm
 
+from app.xml import xml_creation
+
+import config
+
 module = Blueprint('releases', __name__, url_prefix ='/automaton/releases')
 
 def log_error(*args, **kwargs):
@@ -46,7 +50,7 @@ def create():
                               status = status,
                               user_id = g.user.id)
             db.session.add(release)
-            db.session.commit(release)
+            db.session.commit()
             flash('Success release creation', 'success')
             return redirect(url_for('releases.read'))
         else:
@@ -74,6 +78,7 @@ def read():
         if request.method == 'POST':
             if g.user.id == cur_release.user_id:
                 cur_release.status = 'Released'
+                xml_creation(db.session, cur_release.id, current_app.config['AUTOMATON_FILES_DIR'])
                 db.session.commit()
                 flash('Release successfully closed! Congratulations!', 'success')
                 return redirect(url_for('releases.history'))
