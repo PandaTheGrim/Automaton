@@ -8,6 +8,7 @@ from flask import (
     redirect,
     url_for,
     current_app,
+    send_from_directory,
 )
 
 from flask_login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -105,3 +106,9 @@ def history():
     else:
         flash('You dont have release history.', 'danger')
         return redirect( url_for('releases.read'))
+
+@module.route('/uploads/<int:id>', methods=['GET', 'POST'])
+@login_required
+def xml_download(id):
+    release_xml = Release.query.filter(Release.id == id).first()
+    return send_from_directory(directory=current_app.config['AUTOMATON_FILES_DIR'], filename='{}'.format(release_xml.id))
