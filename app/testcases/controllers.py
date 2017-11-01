@@ -102,9 +102,9 @@ def delete(id):
 @login_required
 def passed(id):
     try:
+        cur_test_case = TestCase.query.filter_by(id = id).first()
         cur_test_plan = TestPlan.query.filter_by(id = cur_test_case.testplan_id).first()
         if cur_test_plan.status != 'Closed':
-            cur_test_case = TestCase.query.filter_by(id = id).first()
             cur_test_case.status = 'Passed'
             db.session.commit()
             return redirect(url_for('testplans.read', id=cur_test_plan.id))
@@ -122,9 +122,9 @@ def passed(id):
 @login_required
 def failed(id):
     try:
+        cur_test_case = TestCase.query.filter_by(id = id).first()
         cur_test_plan = TestPlan.query.filter_by(id = cur_test_case.testplan_id).first()
         if cur_test_plan.status != 'Closed':
-            cur_test_case = TestCase.query.filter_by(id = id).first()
             cur_test_case.status = 'Failed'
             db.session.commit()
             return redirect(url_for('testplans.read', id=cur_test_plan.id))
