@@ -8,7 +8,7 @@ from flask import (
     redirect,
     url_for,
     current_app,
-    send_from_directory,
+    send_from_directory
 )
 
 from flask_login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -17,6 +17,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from .models import Release, db
 from app.testplans.models import TestPlan
+from app.testcases.models import TestCase
 from .forms import ReleaseCreateForm
 
 from app.xml import xml_creation
@@ -74,17 +75,26 @@ def create():
 def read():
     cur_release = Release.query.filter(Release.status == 'In progress').first()
     test_plans = TestPlan.query.all()
+    test_cases = TestCase.query.all()
 
     try:
         if request.method == 'POST':
-            if g.user.id == cur_release.user_id:
+            if current_user.role == 'manager' or current_user.role == 'admin':
                 cur_release.status = 'Released'
                 xml_creation(db.session, cur_release.id, current_app.config['AUTOMATON_FILES_DIR'])
+                #flush columns in test_plans
+                for item in test_plans:
+                    item.status == 'None'
+                    item.comment == ''
+                #flush columns in test_cases
+                for item in test_cases:
+                    item.status == 'None'
+                    item.comment == ''
                 db.session.commit()
                 flash('Release successfully closed! Congratulations!', 'success')
                 return redirect(url_for('releases.history'))
             else:
-                flash('You doesnt have permission to close this release. Only creator can do that action.', 'danger')
+                flash('You doesnt have permission to close this release. Only user with role release-manager can do that action.', 'danger')
                 return redirect(url_for('releases.read'))
     except SQLAlchemyError as e:
         log_error('There was error while querying database', exc_info=e)
@@ -92,7 +102,7 @@ def read():
         flash('Something went wrong, please check server logs for additional information.', 'danger')
 
     if cur_release != None:
-        return render_template('releases/index.html', release=cur_release, test_plans=test_plans)
+        return render_template('releases/index.html', release=cur_release, test_plans=test_plans, user=current_user)
     else:
         flash('You dont have active releases. Please create it first!', 'danger')
         return redirect( url_for('releases.create'))

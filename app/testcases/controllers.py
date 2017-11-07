@@ -74,29 +74,41 @@ def create(testplanid):
 @module.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit(id):
-    form = TestCaseCreateForm(request.form)
-    cur_test_case = TestCase.query.filter_by(id = id).first()
-    testplanid = cur_test_case.testplan_id
-    cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
-    if request.method == 'POST':
-        cur_test_case.description = request.form['description']
-        cur_test_case.comment = request.form['comment']
-        db.session.commit()
-        return redirect(url_for('testplans.read', id=cur_test_plan.id))
-    return render_template('testcases/edit.html',
-                           id = cur_test_case.id,
-                           case = cur_test_case,
-                           form = form)
+    try:
+        form = TestCaseCreateForm(request.form)
+        cur_test_case = TestCase.query.filter_by(id = id).first()
+        testplanid = cur_test_case.testplan_id
+        cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
+        if request.method == 'POST':
+            cur_test_case.description = request.form['description']
+            cur_test_case.comment = request.form['comment']
+            db.session.commit()
+            return redirect(url_for('testplans.read', id=cur_test_plan.id))
+        return render_template('testcases/edit.html',
+                               id = cur_test_case.id,
+                               case = cur_test_case,
+                               form = form)
+    except SQLAlchemyError as e:
+        log_error('There was error while querying database', exc_info=e)
+        db.session.rollback()
+        flash('Something went wrong, please check your input data.', 'danger')
+        return redirect( url_for('dashboard.index') )
 
 @module.route('/delete/<int:id>')
 @login_required
 def delete(id):
-    cur_test_case = TestCase.query.filter_by(id = id).first()
-    testplanid = cur_test_case.testplan_id
-    cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
-    db.session.delete(cur_test_case)
-    db.session.commit()
-    return redirect(url_for('testplans.read', id=cur_test_plan.id))
+    try:
+        cur_test_case = TestCase.query.filter_by(id = id).first()
+        testplanid = cur_test_case.testplan_id
+        cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
+        db.session.delete(cur_test_case)
+        db.session.commit()
+        return redirect(url_for('testplans.read', id=cur_test_plan.id))
+    except SQLAlchemyError as e:
+        log_error('There was error while querying database', exc_info=e)
+        db.session.rollback()
+        flash('Something went wrong, please check your input data.', 'danger')
+        return redirect( url_for('dashboard.index') )
 
 @module.route('/passed/<int:id>')
 @login_required

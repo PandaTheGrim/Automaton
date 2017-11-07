@@ -19,7 +19,11 @@
       <hr>
       <p> {{ release.description }} </p>
       <hr>
-      <p> Status: {{ release.status }} </p>
+      <p> Status:
+        {% if release.status == 'In progress' %}
+            <button type="button" class="btn btn-outline-secondary">{{ release.status }}</button>
+        {% endif %}
+      </p>
       <table class="table">
         <thead>
         <tr>
@@ -45,10 +49,12 @@
         {% endfor %}
         </tbody>
       </table>
-
-    <div class="card-body">
-    </div>
-      <input class="btn btn-danger btn-block" type="submit" value="Close release">
+      <hr>
+      <div class="row">
+        {% if user.role == 'manager' or user.role == 'admin' %}
+          <input class="btn btn-danger btn-block" type="submit" value="Close release">
+        {% endif %}
+      </div>
   </div>
 </div>
 </form>
