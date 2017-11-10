@@ -2,10 +2,11 @@ import os
 from flask import Flask
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from .database import db
-from .admin import admin
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.index'
+
+from .admin import admin
 
 def create_app():
     app = Flask(__name__)

@@ -10,9 +10,9 @@ class Users(db.Model):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80), unique=False)
     email = db.Column(db.String(80), unique=True)
-    role = db.Column(db.String(7),unique=False, default= 'user')
     github_id = db.Column(db.String(30), unique=True)
 
+    role = db.relationship("Roles", backref="users", lazy="dynamic")
     test_plans = db.relationship("TestPlan", backref="users", lazy="dynamic")
     test_cases = db.relationship("TestCase", backref="users", lazy="dynamic")
     releases = db.relationship("Release", backref="users", lazy="dynamic")
@@ -28,6 +28,17 @@ class Users(db.Model):
 
     def get_id(self):
         return str(self.id)
+
+    def get_role(self):
+        return self.role
+
+class Roles(db.Model):
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer, primary_key=True)
+    role = db.Column(db.String(80), unique=True, default='viewer')
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 @login_manager.user_loader
 def load_user(user_id):

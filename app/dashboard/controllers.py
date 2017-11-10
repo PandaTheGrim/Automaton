@@ -30,6 +30,7 @@ def index():
         for case in cases:
             case_array.append(case)
         hash[plan] = case_array
+    print(hash)
     # percentage calculation
     metrics = {'status': 'current'}
     for key in hash:

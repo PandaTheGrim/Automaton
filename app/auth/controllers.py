@@ -78,6 +78,17 @@ def logout():
     logout_user()
     return redirect(url_for('auth.index'))
 
+@module.route('/profile', methods=['GET'])
+def profile():
+    try:
+        user = Users.query.filter_by(username = current_user.username).first()
+        return render_template('auth/profile.html',
+                               user=user)
+    except SQLAlchemyError as e:
+        log_error('There was error while querying database', exc_info=e)
+        db.session.rollback()
+        flash('Something went wrong, please check your input data.', 'danger')
+    return redirect( url_for('dashboard.index') )
 
 client_id = github.client_id
 redirect_uri = "http://127.0.0.1:5000/account/success_github"

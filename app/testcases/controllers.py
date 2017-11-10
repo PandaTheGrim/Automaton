@@ -18,6 +18,8 @@ from .models import TestCase, db
 from app.testplans.models import TestPlan
 from .forms import TestCaseCreateForm
 
+from app.acl import permission_required, engineer_required
+
 module = Blueprint('testcases', __name__, url_prefix ='/automaton/cases')
 
 def log_error(*args, **kwargs):
@@ -34,6 +36,7 @@ def list():
 
 @module.route('/create/testplanid/<int:testplanid>', methods=['GET', 'POST'])
 @login_required
+@engineer_required
 def create(testplanid):
     form = TestCaseCreateForm(request.form)
     cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
@@ -73,6 +76,7 @@ def create(testplanid):
 
 @module.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
+@engineer_required
 def edit(id):
     try:
         form = TestCaseCreateForm(request.form)
@@ -96,6 +100,7 @@ def edit(id):
 
 @module.route('/delete/<int:id>')
 @login_required
+@engineer_required
 def delete(id):
     try:
         cur_test_case = TestCase.query.filter_by(id = id).first()
@@ -112,6 +117,7 @@ def delete(id):
 
 @module.route('/passed/<int:id>')
 @login_required
+@engineer_required
 def passed(id):
     try:
         cur_test_case = TestCase.query.filter_by(id = id).first()
@@ -132,6 +138,7 @@ def passed(id):
 
 @module.route('/failed/<int:id>')
 @login_required
+@engineer_required
 def failed(id):
     try:
         cur_test_case = TestCase.query.filter_by(id = id).first()
