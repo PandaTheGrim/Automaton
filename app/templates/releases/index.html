@@ -51,8 +51,9 @@
       </table>
       <hr>
       <div class="row">
-        {% if user.role == 'manager' or user.role == 'admin' %}
-          <input class="btn btn-danger btn-block" type="submit" value="Close release">
+
+        {% if (user.role_id == "manager") or (user.role_id == "admin") %}
+            <input class="btn btn-danger btn-block" type="submit" value="Close release">
         {% endif %}
       </div>
   </div>

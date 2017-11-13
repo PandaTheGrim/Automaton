@@ -12,7 +12,8 @@ class Users(db.Model):
     email = db.Column(db.String(80), unique=True)
     github_id = db.Column(db.String(30), unique=True)
 
-    role = db.relationship("Roles", backref="users", lazy="dynamic")
+    role_id = db.Column(db.String, db.ForeignKey('roles.role'))
+    role = db.relationship("Roles", backref="users")
     test_plans = db.relationship("TestPlan", backref="users", lazy="dynamic")
     test_cases = db.relationship("TestCase", backref="users", lazy="dynamic")
     releases = db.relationship("Release", backref="users", lazy="dynamic")
@@ -32,13 +33,40 @@ class Users(db.Model):
     def get_role(self):
         return self.role
 
+    def default_admin_user(app, db):
+        try:
+            admin = Users(username = app.config['ADMIN_USERNAME'],
+                          password = app.config['ADMIN_PASSWORD'],
+                          email = app.config['ADMIN_EMAIL'],
+                          role = Roles.query.filter(Roles.role == "admin").first())
+            db.session.add(admin)
+            db.session.commit()
+        except Exception as e:
+            print('\nSome admin user addition error: ')
+            print(e)
+        return True
+
+
 class Roles(db.Model):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key=True)
-    role = db.Column(db.String(80), unique=True, default='viewer')
+    role = db.Column(db.String(80), unique=True)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    def __repr__(self):
+        return '%r' % (self.role)
+
+    def default_roles(db):
+        default_roles = ['admin', 'manager', 'engineer', 'viewer']
+        for item in default_roles:
+            try:
+                with db.session.begin_nested():
+                    role = Roles(role = item)
+                    db.session.add(role)
+                db.session.commit()
+            except:
+                print('role ' + item + ' already exist')
+        return True
 
 @login_manager.user_loader
 def load_user(user_id):

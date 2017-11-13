@@ -13,3 +13,6 @@ class Release(db.Model):
     status = db.Column(db.String(20), unique=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return '%r' % (self.name)

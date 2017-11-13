@@ -11,3 +11,6 @@ class TestCase(db.Model):
 
     testplan_id = db.Column(db.Integer, db.ForeignKey('test_plan.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return '%r' % (self.name)

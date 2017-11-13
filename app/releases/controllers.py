@@ -79,17 +79,17 @@ def read():
 
     try:
         if request.method == 'POST':
-            if current_user.role == 'manager' or current_user.role == 'admin':
+            if current_user.role_id == 'admin' or current_user.role_id == 'manager':
                 cur_release.status = 'Released'
                 xml_creation(db.session, cur_release.id, current_app.config['AUTOMATON_FILES_DIR'])
                 #flush columns in test_plans
                 for item in test_plans:
-                    item.status == 'None'
-                    item.comment == ''
+                    item.status = 'None'
+                    item.comment = ''
                 #flush columns in test_cases
                 for item in test_cases:
-                    item.status == 'None'
-                    item.comment == ''
+                    item.status = 'None'
+                    item.comment = ''
                 db.session.commit()
                 flash('Release successfully closed! Congratulations!', 'success')
                 return redirect(url_for('releases.history'))

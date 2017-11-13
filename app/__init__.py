@@ -3,6 +3,8 @@ from flask import Flask
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from .database import db
 
+from flask_admin.contrib.fileadmin import FileAdmin
+
 login_manager = LoginManager()
 login_manager.login_view = 'auth.index'
 
@@ -14,15 +16,18 @@ def create_app():
 
     login_manager.init_app(app)
 
+    admin.add_view(FileAdmin(app.config['AUTOMATON_FILES_DIR'], name='Release xml files'))
     admin.init_app(app)
 
     db.init_app(app)
     with app.test_request_context():
-        from app.auth.models import Users
+        from app.auth.models import Users, Roles
         from app.releases.models import Release
         from app.testplans.models import TestPlan
         from app.testcases.models import TestCase
         db.create_all()
+        Roles.default_roles(db)
+        Users.default_admin_user(app, db)
 
     import app.auth.controllers as auth
     import app.dashboard.controllers as dashboard

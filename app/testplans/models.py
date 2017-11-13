@@ -11,3 +11,6 @@ class TestPlan(db.Model):
 
     test_case = db.relationship("TestCase", backref="test_plan", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return '%r' % (self.name)
