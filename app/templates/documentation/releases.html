@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>What is?</h3>
+            <hr>
+            <p>
+                Releases - is a essence, that define state of your application state.<br>
+                How many tests failed/passed, what working well or not and other.
+            </p>
+            <hr>
+            <h3>Who can create release?</h3>
+            <hr>
+            <p>
+            <ul>
+                <li>Administrator</li>
+                <li>Release manager (manager)</li>
+            </ul>
+            </p>
+            <hr>
+            <h3>I'm admin/manager, how i can create it?</h3>
+            <hr>
+            <p>
+                In left menu:<br>
+            <ul>
+                <li>Click "Releases"</li>
+                <li>Click "Create new"</li>
+                <li>Fill name and description</li>
+                <li>Click "Commit"</li>
+            </ul>
+            </p>
+            <hr>
+            <h3>How many releases i can create?</h3>
+            <hr>
+            <p>
+                Only one at one time.<br>
+                If you wanna create new release - first close current.
+            </p>
+            <hr>
+            <h3>And how i can manage and control current state of release?</h3>
+            <hr>
+            <p>
+                In left menu:<br>
+            <ul>
+                <li>Click "Releases"</li>
+                <li>Click "Current release"</li>
+                <li>Control state and other things</li>
+            </ul>
+            <hr>
+            <h3>How i can close release?</h3>
+            <hr>
+            <p>
+                In left menu:<br>
+            <ul>
+                <li>Click "Releases"</li>
+                <li>Click "Current release"</li>
+                <li>Click "Close release"</li>
+            </ul>
+            <hr>
+            <hr>
+            <h3>Where is information about old releases?</h3>
+            <hr>
+            <p>
+                In left menu:<br>
+            <ul>
+                <li>Click "Releases"</li>
+                <li>Click "History"</li>
+            </ul>
+            At this page you can see short information about old releases.<br>
+            Also you can download full report about old release, by click at "download xml" button.
+            <hr>
+        </div>
+    </div>
+</div>
+{% endblock %}

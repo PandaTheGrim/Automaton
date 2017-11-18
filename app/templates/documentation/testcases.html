@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>What is?</h3>
+            <hr>
+            <p>
+                Test case - is a case, that define quality state of application small part .<br>
+            </p>
+            <hr>
+            <h3>Who can create test case?</h3>
+            <hr>
+            <p>
+            <ul>
+                <li>Administrator</li>
+                <li>Q&A Engineer</li>
+            </ul>
+            </p>
+            <hr>
+            <h3>I'm admin/engineer, how i can create it?</h3>
+            <hr>
+            <p>
+                In left menu:<br>
+            <ul>
+                <li>Click "Releases"</li>
+                <li>Click "Current release"</li>
+                <li>Choose Test plan and click by it's name</li>
+                <li>Click "Create test case"</li>
+                <li>Click "Commit"</li>
+            </ul>
+            </p>
+            <hr>
+            <h3>I want to edit it, how i can do this?</h3>
+            <hr>
+            <p>
+                In left menu:<br>
+                <li>Click "Releases"</li>
+                <li>Click "Current release"</li>
+                <li>Choose Test plan and click by it's name</li>
+                <li>Choose Test case and click by it's name</li>
+                <li>At this point you can
+                    <ul>
+                        <li>Edit test case</li>
+                        <li>Delete test case</li>
+                    </ul>
+                </li>
+            </ul>
+            </p>
+            <hr>
+            <h3>What else i can do?</h3>
+            <hr>
+            <p>Near test case (at right) you can see buttons "Pass"/"Failed".<br>
+               So, it's main automaton function - when you define test case state - you click button and result commited to db.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -56,18 +56,20 @@
             <span class="nav-link-text">Create test plan</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Documents">
-          <a class="nav-link" href="{{ url_for('docs.index') }}">
-            <i class="fa fa-fw fa-book"></i>
-            <span class="nav-link-text">Documentation</span>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profile">
+          <a class="nav-link" href="{{ url_for('auth.profile')}}">
+            <i class="fa fa-fw fa-user"></i>
+            <span class="nav-link-text">Profile</span>
           </a>
         </li>
+        <!--
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Api">
           <a class="nav-link" href="{{ url_for('api.docs')}}">
             <i class="fa fa-fw fa-gears"></i>
             <span class="nav-link-text">Api</span>
           </a>
         </li>
+        -->
         {% if current_user.role_id =='admin' %}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Admin">
           <a class="nav-link" href="/admin">
@@ -76,6 +78,38 @@
           </a>
         </li>
         {% endif %}
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Documents">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponentsDocs" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-book"></i>
+            <span class="nav-link-text">Documentation</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponentsDocs">
+            <li>
+              <a href="{{ url_for('docs.index') }}">Main information</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.releases') }}">Releases</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.testplans') }}">Test plans</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.testcases') }}">Test cases</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.metrics') }}">Metrics</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.admin') }}">Administration</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.groups') }}">Groups</a>
+            </li>
+            <li>
+              <a href="{{ url_for('docs.roles') }}">Roles</a>
+            </li>
+          </ul>
+        </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">

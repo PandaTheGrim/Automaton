@@ -57,7 +57,7 @@ class Users(db.Model):
                           password=app.config['ADMIN_PASSWORD'],
                           email=app.config['ADMIN_EMAIL'],
                           role=Roles.query.filter(Roles.role == "admin").first(),
-                          group=Groups.query.filter(Groups.group == 'admin').first()
+                          group=Groups.query.filter(Groups.group == "admin").first()
                           )
             db.session.add(admin)
             db.session.commit()

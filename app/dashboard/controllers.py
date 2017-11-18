@@ -22,17 +22,17 @@ module = Blueprint('dashboard', __name__, url_prefix ='/automaton')
 @login_required
 def index():
     hash = {}
-    case_array = []
     plans = TestPlan.query.all()
     # forming of testplan->testcases
     for plan in plans:
+        case_array = []
         cases = TestCase.query.filter_by(id = plan.id).all()
         for case in cases:
             case_array.append(case)
         hash[plan] = case_array
     print(hash)
     # percentage calculation
-    metrics = {'status': 'current'}
+    metrics = {}
     for key in hash:
         fail_counter = 0
         pass_counter = 0
