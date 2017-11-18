@@ -57,7 +57,8 @@ def create():
         if request.method == 'POST' and form.validate_on_submit():
             user = Users(username=request.form['username'],
                          email=request.form['email'],
-                         password=request.form['password'])
+                         password=request.form['password'],
+                         role_id='viewer')
             db.session.add(user)
             db.session.commit()
             flash('Success user creation', 'success')

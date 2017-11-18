@@ -68,7 +68,7 @@
             <span class="nav-link-text">Api</span>
           </a>
         </li>
-        {% if current_user.role.role=='admin' %}
+        {% if current_user.role_id =='admin' %}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Admin">
           <a class="nav-link" href="/admin">
             <i class="fa fa-fw fa-id-card"></i>

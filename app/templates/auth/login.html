@@ -7,7 +7,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 
   
-      <link rel="stylesheet" href="../../static/auth/css/style.css">
+      <link href="{{ url_for('static', filename='auth/css/style.css') }}" rel="stylesheet">
+
+	<!-- Bootstrap core CSS-->
+	<link href="{{ url_for('static', filename='app/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="{{ url_for('static', filename='app/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+	<!-- Page level plugin CSS-->
+	<link href="{{ url_for('static', filename='app/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+	<!-- Custom styles for this template-->
+	<link href="{{ url_for('static', filename='app/css/sb-admin.css') }}" rel="stylesheet">
 
 
 	<!DOCTYPE html>
@@ -19,21 +28,25 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="">
-		<title>SB Admin - Start Bootstrap Template</title>
-		<!-- Bootstrap core CSS-->
-		<link href="../../static/app/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<!-- Custom fonts for this template-->
-		<link href="../../static/app/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		<!-- Page level plugin CSS-->
-		<link href="../../static/app/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-		<!-- Custom styles for this template-->
-		<link href="../../static/app/css/sb-admin.css" rel="stylesheet">
+		<title>Automaton - test management tool for Q&A engineers</title>
+
 	</head>
 <body class="bg-dark">
 <div class="container">
 	<div class="card card-login mx-auto mt-5">
 		<div class="card-header">Login</div>
 		<div class="card-body">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			<!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+			{% if messages %}
+			{% for category, message in messages %}
+			<div class="alert alert-{{ category }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<!-- <strong>Title</strong> --> {{ message }}
+			</div>
+			{% endfor %}
+			{% endif %}
+			{% endwith %}
 			<form action="{{ url_for('auth.index') }}" method=post>
 				{{ form.hidden_tag() }}
 				<div class="form-group">
@@ -54,12 +67,21 @@
 		</div>
 	</div>
 </div>
-<!-- Bootstrap core JavaScript-->
-<script src="../../static/app/vendor/jquery/jquery.min.js"></script>
-<script src="../../static/app/vendor/popper/popper.min.js"></script>
-<script src="../../static/app/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!-- Core plugin JavaScript-->
-<script src="../../static/app/vendor/jquery-easing/jquery.easing.min.js"></script>
 </body>
+<!-- Bootstrap core JavaScript-->
+<script src="{{ url_for('static', filename='app/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/popper/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<!-- Core plugin JavaScript-->
+<script src="{{ url_for('static', filename='app/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<!-- Page level plugin JavaScript-->
+<script src="{{ url_for('static', filename='app/vendor/chart.js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='app/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+<!-- Custom scripts for all pages-->
+<script src="{{ url_for('static', filename='app/js/sb-admin.min.js') }}"></script>
+<!-- Custom scripts for this page-->
+<script src="{{ url_for('static', filename='app/js/sb-admin-datatables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app/js/sb-admin-charts.min.js') }}"></script>
 
 </html>

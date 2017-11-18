@@ -21,12 +21,13 @@ def create_app():
 
     db.init_app(app)
     with app.test_request_context():
-        from app.auth.models import Users, Roles
+        from app.auth.models import Users, Roles, Groups
         from app.releases.models import Release
         from app.testplans.models import TestPlan
         from app.testcases.models import TestCase
         db.create_all()
         Roles.default_roles(db)
+        Groups.default_groups(db)
         Users.default_admin_user(app, db)
 
     import app.auth.controllers as auth
