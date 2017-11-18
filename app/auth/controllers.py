@@ -21,10 +21,12 @@ from .forms import UserLoginForm, UserCreateForm
 
 from .oauth import github
 
-module = Blueprint('auth', __name__, url_prefix ='/account')
+module = Blueprint('auth', __name__, url_prefix='/account')
+
 
 def log_error(*args, **kwargs):
     current_app.logger.error(*args, **kwargs)
+
 
 @module.route('/login', methods=['GET', 'POST'])
 def index():
@@ -33,11 +35,11 @@ def index():
         if request.method == 'POST' and form.validate_on_submit():
             username = request.form['username']
             password = request.form['password']
-            cur_user = Users.query.filter_by(username = username).first()
+            cur_user = Users.query.filter_by(username=username).first()
             if cur_user is None:
                 log_error('No user find with name %s', username)
                 return render_template('auth/create.html',
-                                       form = form)
+                                       form=form)
             if cur_user.password == password:
                 login_user(cur_user)
                 return redirect(url_for('dashboard.index'))
@@ -48,7 +50,8 @@ def index():
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
     return render_template('auth/login.html',
-                       form = form)
+                           form=form)
+
 
 @module.route('/create', methods=['GET', 'POST'])
 def create():
@@ -58,7 +61,8 @@ def create():
             user = Users(username=request.form['username'],
                          email=request.form['email'],
                          password=request.form['password'],
-                         role_id='viewer')
+                         role_id='viewer',
+                         group_id='default')
             db.session.add(user)
             db.session.commit()
             flash('Success user creation', 'success')
@@ -66,30 +70,33 @@ def create():
             return redirect(url_for('dashboard.index'))
         else:
             return render_template('auth/create.html',
-                                   form = form)
+                                   form=form)
     except SQLAlchemyError as e:
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
     return render_template('auth/create.html',
-                           form = form)
+                           form=form)
+
 
 @module.route('/logout', methods=['GET'])
 def logout():
     logout_user()
     return redirect(url_for('auth.index'))
 
+
 @module.route('/profile', methods=['GET'])
 def profile():
     try:
-        user = Users.query.filter_by(username = current_user.username).first()
+        user = Users.query.filter_by(username=current_user.username).first()
         return render_template('auth/profile.html',
                                user=user)
     except SQLAlchemyError as e:
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
-    return redirect( url_for('dashboard.index') )
+    return redirect(url_for('dashboard.index'))
+
 
 client_id = github.client_id
 redirect_uri = "http://127.0.0.1:5000/account/success_github"
@@ -99,15 +106,17 @@ params = {'client_id': client_id,
           'redirect_uri': redirect_uri,
           'allow_signup': "true"}
 
+
 @module.route('/github_login', methods=['GET'])
 def github_login():
     return redirect(github.get_authorize_url(**params))
+
 
 @module.route('/success_github', methods=['GET'])
 def sucess_github():
     if not request.args.get('code'):
         print("Please implement 403!!!")
-    
+
     session = github.get_auth_session(data={'client_id': client_id,
                                             'client_secret': github.client_secret,
                                             'code': request.args.get('code'),
@@ -115,7 +124,7 @@ def sucess_github():
                                             'state': 'code123'})
 
     resp = requests.get(
-        github.base_url + "user", 
+        github.base_url + "user",
         headers={"Authorization": "token {}".format(session.access_token)}
     )
 
@@ -129,8 +138,8 @@ def sucess_github():
 
     if not user:
         user = Users(username=username,
-                        email=email,
-                        github_id=github_user_id)
+                     email=email,
+                     github_id=github_user_id)
         db.session.add(user)
         db.session.commit()
 

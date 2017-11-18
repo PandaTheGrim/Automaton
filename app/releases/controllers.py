@@ -23,6 +23,7 @@ from .forms import ReleaseCreateForm
 from app.xml import xml_creation
 
 import config
+import pytz, datetime
 
 module = Blueprint('releases', __name__, url_prefix ='/automaton/releases')
 
@@ -50,7 +51,10 @@ def create():
                               description=request.form['description'],
                               xml = xml,
                               status = status,
-                              user_id = g.user.id)
+                              user_id = g.user.id,
+                              open_date = datetime.datetime.\
+                                  now(pytz.timezone(current_app.config["TIMEZONE"])).\
+                                  strftime('%Y-%m-%d %H:%M:%S'))
             db.session.add(release)
             db.session.commit()
             flash('Success release creation', 'success')
@@ -81,6 +85,9 @@ def read():
         if request.method == 'POST':
             if current_user.role_id == 'admin' or current_user.role_id == 'manager':
                 cur_release.status = 'Released'
+                cur_release.close_date = datetime.datetime.\
+                    now(pytz.timezone(current_app.config["TIMEZONE"])).\
+                    strftime('%Y-%m-%d %H:%M:%S')
                 xml_creation(db.session, cur_release.id, current_app.config['AUTOMATON_FILES_DIR'])
                 #flush columns in test_plans
                 for item in test_plans:

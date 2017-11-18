@@ -1,5 +1,6 @@
 import os
 
+
 class Config(object):
     DEBUG = False
     CSRF_ENABLED = True
@@ -21,9 +22,14 @@ class Config(object):
     ADMIN_USERNAME = 'admin'
     ADMIN_PASSWORD = 'admin'
     ADMIN_EMAIL = 'admin@test.test'
+    DEFAULT_ROLES = ['admin', 'release manager', 'manager', 'engineer', 'viewer']
+    DEFAULT_GROUPS = ['admin', 'default']
+    TIMEZONE = 'Asia/Yekaterinburg'
+
 
 class ProductionConfig(Config):
     DEBUG = False
+
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True

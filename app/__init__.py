@@ -5,10 +5,9 @@ from .database import db
 
 from flask_admin.contrib.fileadmin import FileAdmin
 
+
 login_manager = LoginManager()
 login_manager.login_view = 'auth.index'
-
-from .admin import admin
 
 def create_app():
     app = Flask(__name__)
@@ -16,6 +15,7 @@ def create_app():
 
     login_manager.init_app(app)
 
+    from .admin import admin
     admin.add_view(FileAdmin(app.config['AUTOMATON_FILES_DIR'], name='Release xml files'))
     admin.init_app(app)
 
@@ -26,8 +26,8 @@ def create_app():
         from app.testplans.models import TestPlan
         from app.testcases.models import TestCase
         db.create_all()
-        Roles.default_roles(db)
-        Groups.default_groups(db)
+        Roles.default_roles(app, db)
+        Groups.default_groups(app, db)
         Users.default_admin_user(app, db)
 
     import app.auth.controllers as auth

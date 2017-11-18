@@ -3,6 +3,7 @@ from sqlalchemy import event
 from app.database import db
 from app import login_manager
 
+
 class Users(db.Model):
     __tablename__ = 'users'
 
@@ -30,7 +31,7 @@ class Users(db.Model):
         return False
 
     def is_admin(self):
-        if self.role == 'admin':
+        if str(self.role)[1:-1] == "admin":
             return True
         else:
             return False
@@ -38,8 +39,11 @@ class Users(db.Model):
     def get_id(self):
         return str(self.id)
 
+    def get_username(self):
+        return self.username
+
     def get_role(self):
-        return self.role
+        return str(self.role)[1:-1]
 
     def get_group(self):
         return self.group
@@ -49,11 +53,11 @@ class Users(db.Model):
 
     def default_admin_user(app, db):
         try:
-            admin = Users(username = app.config['ADMIN_USERNAME'],
-                          password = app.config['ADMIN_PASSWORD'],
-                          email = app.config['ADMIN_EMAIL'],
-                          role = Roles.query.filter(Roles.role == "admin").first(),
-                          group = Groups.query.filter(Groups.group == 'admin').first()
+            admin = Users(username=app.config['ADMIN_USERNAME'],
+                          password=app.config['ADMIN_PASSWORD'],
+                          email=app.config['ADMIN_EMAIL'],
+                          role=Roles.query.filter(Roles.role == "admin").first(),
+                          group=Groups.query.filter(Groups.group == 'admin').first()
                           )
             db.session.add(admin)
             db.session.commit()
@@ -72,17 +76,18 @@ class Roles(db.Model):
     def __repr__(self):
         return '%r' % (self.role)
 
-    def default_roles(db):
-        default_roles = ['admin', 'manager', 'engineer', 'viewer']
+    def default_roles(app, db):
+        default_roles = app.config['DEFAULT_ROLES']
         for item in default_roles:
             try:
                 with db.session.begin_nested():
-                    role = Roles(role = item)
+                    role = Roles(role=item)
                     db.session.add(role)
                 db.session.commit()
             except:
                 print('role ' + item + ' already exist')
         return True
+
 
 class Groups(db.Model):
     __tablename__ = 'groups'
@@ -93,17 +98,18 @@ class Groups(db.Model):
     def __repr__(self):
         return '%r' % (self.group)
 
-    def default_groups(db):
-        default_groups = ['admin', 'compliance', 'product', 'mobile']
+    def default_groups(app, db):
+        default_groups = app.config['DEFAULT_GROUPS']
         for item in default_groups:
             try:
                 with db.session.begin_nested():
-                    group = Groups(group = item)
+                    group = Groups(group=item)
                     db.session.add(group)
                 db.session.commit()
             except:
                 print('Group ' + item + ' already exist')
         return True
+
 
 @login_manager.user_loader
 def load_user(user_id):

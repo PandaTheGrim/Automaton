@@ -19,6 +19,10 @@ def xml_creation(db_session, release_id, root_path):
     release_description.text = cur_release.description
     release_status = etree.SubElement(release_properties, 'status')
     release_status.text = cur_release.status
+    release_status = etree.SubElement(release_properties, 'start_date')
+    release_status.text = cur_release.open_date
+    release_status = etree.SubElement(release_properties, 'close_date')
+    release_status.text = cur_release.close_date
 
     test_plans = TestPlan.query.all()
     test_plans_parse = etree.SubElement(release_tag, 'test_plans')

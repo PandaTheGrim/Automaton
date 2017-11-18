@@ -1,4 +1,4 @@
-import os 
+import os
 from rauth import OAuth2Service
 
 OAUTH_CREDENTIALS = {
@@ -16,5 +16,3 @@ github = OAuth2Service(
     client_id=OAUTH_CREDENTIALS['github']['id'],
     client_secret=OAUTH_CREDENTIALS['github']['secret']
 )
-
-
