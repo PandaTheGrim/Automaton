@@ -59,8 +59,9 @@ def create():
                 log_error('Validation error:\n\t'
                           'name: %s\n\t'
                           'description: %s\n\t'
-                          'status: %s\n\t user.id: %s',
-                          name, description, status, user.id)
+                          'status: %s\n\tuser.id: %s',
+                          request.form['name'],request.form['description'], status, g.user.id)
+                flash('Validation error, please check your input data.', 'danger')
     except SQLAlchemyError as e:
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
