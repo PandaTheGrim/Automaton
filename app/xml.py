@@ -1,11 +1,9 @@
 from lxml import etree
 
-from app.auth.models import Users
 from app.releases.models import Release
-from app.testplans.models import TestPlan
 from app.testcases.models import TestCase
+from app.testplans.models import TestPlan
 
-import os
 
 def xml_creation(db_session, release_id, root_path):
     try:
@@ -26,9 +24,9 @@ def xml_creation(db_session, release_id, root_path):
         release_status.text = cur_release.close_date
 
         test_plans = TestPlan.query.all()
-        test_plans_parse = etree.SubElement(release_tag, 'test_plans')
         for item in test_plans:
-            test_plan_properties = etree.SubElement(release_tag, 'test_plan_{}'.format(test_plan_counter))
+            test_plan_properties = etree.SubElement(release_tag,
+                                                    'test_plan_{}'.format(test_plan_counter))
             testplan_title = etree.SubElement(test_plan_properties, 'name')
             testplan_title.text = item.name
             testplan_description = etree.SubElement(test_plan_properties, 'description')
@@ -40,7 +38,8 @@ def xml_creation(db_session, release_id, root_path):
             test_cases = TestCase.query.filter(TestCase.testplan_id == item.id).all()
             test_case_counter = 0
             for case in test_cases:
-                test_case_properties = etree.SubElement(testplan_cases, 'test_case_{}'.format(test_case_counter))
+                test_case_properties = etree.SubElement(testplan_cases,
+                                                        'test_case_{}'.format(test_case_counter))
                 testcase_title = etree.SubElement(test_case_properties, 'name')
                 testcase_title.text = case.name
                 testcase_description = etree.SubElement(test_case_properties, 'description')
@@ -57,13 +56,8 @@ def xml_creation(db_session, release_id, root_path):
         doc = etree.ElementTree(release_tag)
 
         doc.write(path_to_xml, pretty_print=True)
-
-    # doc = open(path_to_xml, 'w')
-    # print(etree.tostring(release_tag, pretty_print=True), file=doc)
-    # doc.close()
-
         cur_release.xml = cur_release.id
     except Exception as err:
-        print('An error occered:\n', err)
+        print('An error occurred:\n', err)
 
     return True

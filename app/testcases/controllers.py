@@ -4,58 +4,59 @@ from flask import (
     render_template,
     request,
     flash,
-    abort,
     redirect,
     url_for,
     current_app,
 )
-
-from flask_login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-
+from flask_login import (current_user, login_required)
 from sqlalchemy.exc import SQLAlchemyError
 
-from .models import TestCase, db
+from app.acl import engineer_required
 from app.testplans.models import TestPlan
 from .forms import TestCaseCreateForm
+from .models import TestCase, db
 
-from app.acl import permission_required, engineer_required
+module = Blueprint('testcases', __name__, url_prefix='/automaton/cases')
 
-module = Blueprint('testcases', __name__, url_prefix ='/automaton/cases')
 
 def log_error(*args, **kwargs):
     current_app.logger.error(*args, **kwargs)
 
+
 @module.before_request
 def global_user_definition():
     g.user = current_user
+
 
 @module.route('/')
 @login_required
 def list():
     return render_template('testcases/index.html')
 
+
 @module.route('/create/testplanid/<int:testplanid>', methods=['GET', 'POST'])
 @login_required
 @engineer_required
 def create(testplanid):
     form = TestCaseCreateForm(request.form)
-    cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
+    cur_test_plan = TestPlan.query.filter_by(id=testplanid).first()
     status = 'None'
     try:
         if request.method == 'POST':
             if form.validate_on_submit():
-                cur_test_case = TestCase.query.filter_by(name = request.form['name']).first()
+                cur_test_case = TestCase.query.filter_by(name=request.form['name']).first()
                 log_error(cur_test_plan)
                 if cur_test_case is not None:
-                    flash('Test case with that name already created. Please choose another name.', 'danger')
+                    flash('Test case with that name already created. Please choose another name.',
+                          'danger')
                     return render_template('testcases/create.html',
                                            testplanid=cur_test_plan.id,
-                                           form = form)
+                                           form=form)
                 test_case = TestCase(name=request.form['name'],
                                      description=request.form['description'],
-                                     status = status,
+                                     status=status,
                                      testplan_id=cur_test_plan.id,
-                                     user_id = g.user.id)
+                                     user_id=g.user.id)
                 db.session.add(test_case)
                 db.session.commit()
                 flash('Success testcase creation', 'success')
@@ -71,8 +72,9 @@ def create(testplanid):
         flash('Something went wrong, please check your input data.', 'danger')
     request.form.get('testplanid')
     return render_template('testcases/create.html',
-                           testplanid = cur_test_plan.id,
-                           form = form)
+                           testplanid=cur_test_plan.id,
+                           form=form)
+
 
 @module.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -80,32 +82,33 @@ def create(testplanid):
 def edit(id):
     try:
         form = TestCaseCreateForm(request.form)
-        cur_test_case = TestCase.query.filter_by(id = id).first()
+        cur_test_case = TestCase.query.filter_by(id=id).first()
         testplanid = cur_test_case.testplan_id
-        cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
+        cur_test_plan = TestPlan.query.filter_by(id=testplanid).first()
         if request.method == 'POST':
             cur_test_case.description = request.form['description']
             cur_test_case.comment = request.form['comment']
             db.session.commit()
             return redirect(url_for('testplans.read', id=cur_test_plan.id))
         return render_template('testcases/edit.html',
-                               id = cur_test_case.id,
-                               case = cur_test_case,
-                               form = form)
+                               id=cur_test_case.id,
+                               case=cur_test_case,
+                               form=form)
     except SQLAlchemyError as e:
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
-        return redirect( url_for('dashboard.index') )
+        return redirect(url_for('dashboard.index'))
+
 
 @module.route('/delete/<int:id>')
 @login_required
 @engineer_required
 def delete(id):
     try:
-        cur_test_case = TestCase.query.filter_by(id = id).first()
+        cur_test_case = TestCase.query.filter_by(id=id).first()
         testplanid = cur_test_case.testplan_id
-        cur_test_plan = TestPlan.query.filter_by(id = testplanid).first()
+        cur_test_plan = TestPlan.query.filter_by(id=testplanid).first()
         db.session.delete(cur_test_case)
         db.session.commit()
         return redirect(url_for('testplans.read', id=cur_test_plan.id))
@@ -113,15 +116,16 @@ def delete(id):
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
-        return redirect( url_for('dashboard.index') )
+        return redirect(url_for('dashboard.index'))
+
 
 @module.route('/passed/<int:id>')
 @login_required
 @engineer_required
 def passed(id):
     try:
-        cur_test_case = TestCase.query.filter_by(id = id).first()
-        cur_test_plan = TestPlan.query.filter_by(id = cur_test_case.testplan_id).first()
+        cur_test_case = TestCase.query.filter_by(id=id).first()
+        cur_test_plan = TestPlan.query.filter_by(id=cur_test_case.testplan_id).first()
         if cur_test_plan.status != 'Closed':
             cur_test_case.status = 'Passed'
             db.session.commit()
@@ -133,7 +137,7 @@ def passed(id):
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
-        return redirect( url_for('dashboard.index') )
+        return redirect(url_for('dashboard.index'))
 
 
 @module.route('/failed/<int:id>')
@@ -141,8 +145,8 @@ def passed(id):
 @engineer_required
 def failed(id):
     try:
-        cur_test_case = TestCase.query.filter_by(id = id).first()
-        cur_test_plan = TestPlan.query.filter_by(id = cur_test_case.testplan_id).first()
+        cur_test_case = TestCase.query.filter_by(id=id).first()
+        cur_test_plan = TestPlan.query.filter_by(id=cur_test_case.testplan_id).first()
         if cur_test_plan.status != 'Closed':
             cur_test_case.status = 'Failed'
             db.session.commit()
@@ -154,4 +158,4 @@ def failed(id):
         log_error('There was error while querying database', exc_info=e)
         db.session.rollback()
         flash('Something went wrong, please check your input data.', 'danger')
-        return redirect( url_for('dashboard.index') )
+        return redirect(url_for('dashboard.index'))

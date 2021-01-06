@@ -1,22 +1,14 @@
 from flask import (
     Blueprint,
     render_template,
-    request,
-    flash,
-    abort,
-    redirect,
-    url_for,
-    current_app,
 )
+from flask_login import (login_required)
 
-from flask_login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-
-from sqlalchemy.exc import SQLAlchemyError
-
-from app.testplans.models import TestPlan, db
 from app.testcases.models import TestCase
+from app.testplans.models import TestPlan
 
-module = Blueprint('dashboard', __name__, url_prefix ='/automaton')
+module = Blueprint('dashboard', __name__, url_prefix='/automaton')
+
 
 @module.route('/index')
 @login_required
@@ -26,7 +18,7 @@ def index():
     # forming of testplan->testcases
     for plan in plans:
         case_array = []
-        cases = TestCase.query.filter_by(id = plan.id).all()
+        cases = TestCase.query.filter_by(id=plan.id).all()
         for case in cases:
             case_array.append(case)
         hash[plan] = case_array
@@ -49,4 +41,3 @@ def index():
         metrics[key.name]['failed'] = fail_counter
         metrics[key.name]['none'] = none_counter
     return render_template('dashboard/index.html', metrics=metrics)
-

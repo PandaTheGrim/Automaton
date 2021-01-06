@@ -1,7 +1,5 @@
-from sqlalchemy import event
-
-from app.database import db
 from app import login_manager
+from app.database import db
 
 
 class Users(db.Model):

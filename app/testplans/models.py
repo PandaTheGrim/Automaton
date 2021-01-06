@@ -1,5 +1,6 @@
 from app.database import db
 
+
 class TestPlan(db.Model):
     __tablename__ = 'test_plan'
 

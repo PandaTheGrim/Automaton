@@ -1,26 +1,21 @@
 from flask import (
-    render_template,
-    request,
-    flash,
     abort,
-    redirect,
-    url_for,
     current_app
 )
-from flask_admin import Admin, BaseView, expose, AdminIndexView
+from flask_admin import Admin, expose, AdminIndexView
 from flask_admin.contrib import sqla, fileadmin
 from flask_login import current_user
 
 from app.auth.models import Users, Roles, Groups
 from app.releases.models import Release
-from app.testplans.models import TestPlan
 from app.testcases.models import TestCase
-
+from app.testplans.models import TestPlan
 from .database import db
 
 
 def log_error(*args, **kwargs):
     current_app.logger.error(*args, **kwargs)
+
 
 class ModelView(sqla.ModelView):
     def is_accessible(self):
@@ -105,7 +100,8 @@ class IndexView(AdminIndexView):
             abort(403)
 
         if not current_user.is_admin():
-            log_error('User %s admin panel load attempt at AdminIndexView', current_user.get_username())
+            log_error('User %s admin panel load attempt at AdminIndexView',
+                      current_user.get_username())
             abort(403)
 
         arg1 = 'Hello admin!'

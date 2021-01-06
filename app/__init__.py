@@ -1,13 +1,12 @@
-import os
 from flask import Flask
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from .database import db
-
 from flask_admin.contrib.fileadmin import FileAdmin
+from flask_login import LoginManager
 
+from .database import db
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.index'
+
 
 def create_app():
     app = Flask(__name__)

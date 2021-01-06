@@ -1,6 +1,7 @@
 from functools import wraps
+
+from flask import render_template, flash
 from flask_login import current_user
-from flask import abort, render_template, current_app, flash
 
 
 def permission_required(permission):

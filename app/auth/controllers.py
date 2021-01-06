@@ -1,24 +1,18 @@
 import requests
 from flask import (
-    g,
     Blueprint,
     render_template,
     request,
     flash,
-    abort,
     redirect,
     url_for,
     current_app,
 )
+from flask_login import (current_user, login_user, logout_user)
 from sqlalchemy.exc import SQLAlchemyError
 
-from flask_login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-
-from app import login_manager
-
-from .models import Users, db
 from .forms import UserLoginForm, UserCreateForm
-
+from .models import Users, db
 from .oauth import github
 
 module = Blueprint('auth', __name__, url_prefix='/account')
@@ -58,11 +52,13 @@ def create():
     form = UserCreateForm(request.form)
     try:
         if request.method == 'POST' and form.validate_on_submit():
-            user = Users(username=request.form['username'],
-                         email=request.form['email'],
-                         password=request.form['password'],
-                         role_id='viewer',
-                         group_id='default')
+            user = Users(
+                username=request.form['username'],
+                email=request.form['email'],
+                password=request.form['password'],
+                role_id='viewer',
+                group_id='default'
+            )
             db.session.add(user)
             db.session.commit()
             flash('Success user creation', 'success')

@@ -18,7 +18,7 @@ class Config(object):
         db_n=POSTGRESQL_DATABASE_DATABASE)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
-    AUTOMATON_FILES_DIR = '/var/automaton'
+    AUTOMATON_FILES_DIR = '.'
     ADMIN_USERNAME = 'admin'
     ADMIN_PASSWORD = 'admin'
     ADMIN_EMAIL = 'admin@test.test'
